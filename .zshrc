@@ -29,7 +29,7 @@ plugins=(git osx autojump brew cloudapp github pip svn django python ssh-agent)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH=/Users/marca/bin:/usr/local/sbin:/usr/local/bin:/Users/marca/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
+export PATH=$HOME/bin:/usr/local/sbin:/usr/local/bin:/Users/marca/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 
 # https://github.com/utahta/pythonbrew
 [[ -s $HOME/.pythonbrew/etc/bashrc ]] && source $HOME/.pythonbrew/etc/bashrc
