@@ -1,0 +1,4 @@
+--type-add=php=tpl
+--type-set=puppet=.pp
+--pager=less -FRSX
+--ignore-dir=coverage-html
