@@ -1,0 +1,31 @@
+set show-all-if-ambiguous on
+
+# Had to add this because "screen" required me to change my backspace key in
+# PuTTY from Control-H to Control-? (127)
+#
+"\e[3~": backward-delete-char
+"\e[3" : delete-char
+
+"\C-h" : backward-delete-char
+
+# Ctrl-Backspace to deletw works
+"\C-\C-?": backward-kill-word
+"\C-\b": backward-kill-word
+
+"\C-x\C-r": re-read-init-file
+
+# Sane incremental searching
+# http://www.wylug.org.uk/talks/2003/07/bash_tips.html
+#
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\M-o": "\C-p\C-a\M-f "
+"\M-s": menu-complete
+# "[D": "popd\n"                   # Ctrl+left
+
+"\e[1;5C": forward-word     # Ctrl+right  => forward word
+"\e[1;5D": backward-word    # Ctrl+left   => backward word
+
+$if Bash
+  Space: magic-space
+$endif

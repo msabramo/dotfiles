@@ -1,0 +1,73 @@
+# -*- sh_mode -*-
+
+funcs()
+{
+        local cur
+        cur=${COMP_WORDS[COMP_CWORD]}
+        COMPREPLY=(`global -c $cur`)
+}
+complete -F funcs global
+
+# LCCM stuff
+export CPPFLAGS='-I/home/y/include -I/usr/local/include'
+export LLOG_STDERR='true'
+
+# COMA / YSM / Overture stuff
+export PKG_CONFIG_PATH="/home/y/lib/pkgconfig:/usr/local/libdata/pkgconfig:/usr/local/lib/pkgconfig"
+
+OS=$(uname)
+ACCOUNT=$(whoami)
+DOMAIN=$(hostname)
+DOMAIN=$(expr "$DOMAIN" : "[^.]*\.\(.*\)")
+HOST=$(hostname -s)
+HOSTFULL=$(hostname)
+YAHOO_INC_EMAIL="${ACCOUNT}@yahoo-inc.com"
+
+# enviroment and functions
+for i in /usr/local/etc/bash_completion.d/yinst_completion ~/.bash_env ~/.bash_alias ~/.bash_function ~/.bash_completion ~/.fff ~/bin/cdargs-bash.sh; do
+  if [ -f $i ]; then
+    source $i
+  fi
+done
+
+if [ "$TERM" = "screen" -a -f ~/.x11_display ]; then
+    export DISPLAY=$(cat ~/.x11_display)
+else
+    if [ ! -z "$DISPLAY" ]; then
+        echo $DISPLAY > ~/.x11_display
+    fi
+fi
+
+if [ "$HOST" = "shifter" ]; then
+   USE_KEYCHAIN="true"
+   KEYCHAIN="/usr/local/bin/keychain"
+   USE_FETCHMAIL="true"
+   FETCHMAIL="/usr/local/bin/fetchmail"
+fi
+
+if [ ! -z "$USE_KEYCHAIN" -a -x "$KEYCHAIN" ]; then
+   # eval $($KEYCHAIN --eval)     # --eval requires keychain >= 2.6.0
+   $KEYCHAIN ~/.ssh/identity && source ~/.keychain/${HOSTNAME}-sh
+fi
+
+if [ ! -z "$DISPLAY" -a -x "/usr/X11R6/bin/xrdb" ]; then
+   /usr/X11R6/bin/xrdb $HOME/.Xdefaults
+fi
+
+if [ ! -z "$USE_FETCHMAIL" -a -x "$FETCHMAIL" ]; then
+  if ! killall -0 fetchmail 2> /dev/null; then
+     echo "killall -0 fetchmail failed - starting fetchmail..."
+     $FETCHMAIL
+  fi
+fi
+
+# alias exit='pwd > ~/.bash_last_dir; \exit'
+# last_dir_file=$HOME/.bash_last_dir-$HOSTFULL
+# if [ -f $last_dir_file ]; then
+#     . $last_dir_file
+# fi
+
+# Brian Holtz's nifty recd function
+# if [ -f $HOME/bin/recd.sh ]; then
+# . $HOME/bin/recd.sh; alias cd=recd
+# fi

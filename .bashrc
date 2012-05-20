@@ -1,0 +1,680 @@
+# -*- mode: shell-script -*-
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+export P4CONFIG=.p4config
+export NODE_PATH=/usr/local/lib/node
+
+if [ -f "$HOME/.profile" ]; then
+    . $HOME/.profile
+fi
+
+if [ ! -z "$BASH_VERSION" ]; then
+    # check the window size after each command and, if necessary, update
+    # the values of LINES and COLUMNS.
+    shopt -s checkwinsize
+
+    # Correct minor spelling mistakes
+    shopt -s cdspell
+fi
+
+# Python virtualenvwrapper
+export WORKON_HOME=~/python/virtualenvs
+source /usr/local/bin/virtualenvwrapper_bashrc 
+
+# Make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+
+# Set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" -a -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# Utility functions
+BASH_LIB_DIR=~/homedir/dotfiles/bash
+if [ -f ${BASH_LIB_DIR}/core_funcs.bash ]; then source ${BASH_LIB_DIR}/core_funcs.bash; fi
+
+# Special stuff work shifter
+if [ "${HOSTNAME}" = "shifter" ]; then
+    if [ -f ${BASH_LIB_DIR}/shifter.bash ]; then source ${BASH_LIB_DIR}/shifter.bash; fi
+fi
+
+# Prompt
+case "$TERM" in
+xterm-color|screen)
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    ;;
+*)
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    ;;
+esac
+
+# Enable color support of ls
+if [ "$TERM" != "dumb" ]; then
+    if program_present "dircolors"; then eval "`dircolors -b`"; fi
+    if ls --color=auto -l > /dev/null 2>&1; then
+        alias ls='ls -CF --color=auto'
+    else
+        alias ls='ls -CF'
+    fi
+fi
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
+    ;;
+*)
+    ;;
+esac
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+
+# Enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+[ -f /etc/bash_completion ] && . /etc/bash_completion
+
+# For VisualWorks (a.k.a.: Cincom Smalltalk)
+# [ -d ~/vw7.4.1nc ] && export VISUALWORKS=~/vw7.4.1nc
+
+# if program_present "keychain"; then
+#     if [ "$USER" = $(basename $HOME) ]; then
+#         keychain && source $HOME/.keychain/${HOSTNAME}-sh
+#     fi
+# fi
+
+# if [ ! -z "$DISPLAY" ]; then
+#     if program_present "xrdb"; then
+#         if [ -f ${HOME}/.Xdefaults ]; then
+#             xrdb ${HOME}/.Xdefaults
+#         fi
+#     fi
+# fi
+
+# if [ ! -z "$USE_FETCHMAIL" ]; then
+#   if ! program_running_as_user "fetchmail"; then
+#      echo "fetchmail not running - starting fetchmail..."
+#      fetchmail
+#   fi
+# fi
+
+# Return to directory we were last in
+last_dir_file=$HOME/.bash_last_dir-$HOSTFULL
+if [ -f $last_dir_file ]; then
+    last_dir=$(cat $last_dir_file)
+    if [ -d $last_dir ]; then
+        cd $last_dir
+    fi
+    rm $last_dir_file
+fi
+
+# Brian Holtz's nifty recd function
+if [ -f $HOME/bin/recd.sh ]; then
+    source $HOME/bin/recd.sh
+    alias cd=recd
+fi
+
+# LOCATION
+case $HOST in
+  *.yahoo.com)
+    export LOCATION='work' ;;
+esac
+
+if [ "$LOCATION" = "work" ]; then
+    # CVS
+    export CVSROOT=${USER}@vault.yahoo.com:/CVSROOT
+    if [ -x "/usr/local/bin/yssh" ]; then
+        export CVS_RSH="/usr/local/bin/yssh"
+    fi
+fi
+
+# editors="emacs jed vim"
+# export EDITOR=$(first_available_program $editors)
+# pagers="most less more"
+# export PAGER=$(first_available_program $pagers)
+
+export EDITOR=vim
+export PAGER=less
+
+export CVSEDITOR=$EDITOR
+export CLICOLOR="true"
+export LSCOLORS="ExGxCxDxCxegedabagacad"
+# export LD_LIBRARY_PATH="/usr/local/lib:${HOME}/lib/FreeBSD:"
+export LESS='-ich4MP%t?f%f :stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-...'
+export PERL5LIB="${HOME}/lib/perl"
+export SHMUX_SSH_OPTS=""
+
+# To stop garbage characters from being output by UTF-8 from Mono
+export LC_ALL=C
+
+# export PATH=~/bin:~/ruby/bin:/home/y/bin:/sbin:/bin:/usr/sbin/:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/X11R6/bin
+path_prepend /usr/local/bin > /dev/null
+path_prepend /usr/local/sbin > /dev/null
+path_prepend ~/bin > /dev/null
+
+if [ ! -z "$YROOT_NAME" ]; then
+    export PS1="\[\033[01;33m\][$YROOT_NAME]\[\033[00m\] $PS1"
+fi
+
+if [ -f /home/y/etc/yroot/yroot.bashrc ]; then
+    . /home/y/etc/yroot/yroot.bashrc
+fi
+
+
+# History stuff
+if [ ! -z "$BASH_VERSION" ]; then
+  shopt -s histappend
+  PROMPT_COMMAND='history -a; [ -f .dirrc ] && . .dirrc'
+  export HISTIGNORE="&:ls:mutt:[bf]g:exit"
+  export HISTFILE=$HOME/.bash_history-$HOSTFULL
+fi
+
+alias acs='apt-cache search'
+alias agi='sudo apt-get install'
+alias b='_back'         # _back is a function
+# alias .='pwd'
+alias ..='pushd .. > /dev/null'
+alias ,='popd > /dev/null'
+alias cpan='perl -MCPAN -eshell'
+alias cvsm='cvs-state'
+alias d='dirs -v; make_dir_aliases'
+alias dhcvs='cvs -d :ext:dreamhost:/home/msabramo/cvsroot'
+alias dircolorslight='eval `dircolors ~/.DIR_COLORS_LIGHT`'
+alias dircolorsdark='eval `dircolors ~/.DIR_COLORS_DARK`'
+alias ds='du -sk * .??* | sort -rn'
+alias e='$EDITOR'
+alias ff='find . -name'
+alias h='history 25'
+alias f='_forward'      # _forward is a function
+alias j='jobs -l'
+alias k='kill %'
+alias la='ls -a'
+alias ll='ls -l'
+alias lt='ls -lat'
+if program_present "gmake"; then alias make='gmake'; fi
+alias mine='sudo chown -R $USER:users'
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias perlpath="perl -e 'print \"@{INC}\n\"'"
+alias printcode='a2ps --line-numbers=1 -E -P'
+alias rc='. ~/.bashrc'
+alias rxvt='rxvt -sr -bg black -fg grey -fn 9x15bold -tn xterm-color'
+alias sr='screen -d -r'
+alias tf='tail -f'
+alias tree='tree -FAC'
+alias tsv2table='column -t -s "	"'
+alias u='cd ..'
+alias utime='perl -e "print time() . \"\n\""'
+alias vim='vim -X'
+alias x2vnc='/usr/X11R6/bin/x2vnc localhost:0 -navhack -resurface -trimsel -west -passwd ~/.x2vnc &'
+
+if [ "$LOCATION" = "work" ]; then
+    alias y='/usr/local/bin/sudo -u yahoo'
+    alias yaa='/usr/bin/tail -f /home/y/logs/yapache/access'
+    alias yac='/usr/local/bin/sudo /home/y/bin/webctl conftest'
+    alias yad='/usr/local/bin/sudo /usr/local/bin/gdb6 /home/y/bin/yapache $(/bin/ps axuw | /usr/bin/grep yapache | /usr/bin/egrep -e "nobody|yahoo" | /usr/bin/cut -c 7-14 | /usr/bin/head -1)'
+    alias yae='/usr/bin/tail -f /home/y/logs/yapache/error'
+    alias yar='/usr/local/bin/sudo /home/y/bin/webctl restart'
+    alias yas='/usr/local/bin/sudo /home/y/bin/webctl stop'
+fi
+
+# for gotodir
+# http://www.redhorse.com.br/projects/gotodir/gotodir.bash
+alias resetdir='rm -f ~/.dirlist'
+alias setdir='pwd >> ~/.dirlist'
+alias gotodir='cd `gotodir.bash`'
+alias gd='gotodir'
+
+# Bobby Lee's "go" hacks
+go()         { cd `cat ~/.Dirs/$@`; pwd; }
+go_add()     { pwd > ~/.Dirs/$@; }
+go_where()   { ls ~/.Dirs/; } 
+
+function _globdo
+{ 
+    local arg="$1"
+    local dir=$(dirname $arg)
+    local base=$(basename $arg)
+    shift
+    find $dir -name $base -exec "$@" {} \;
+    set +f
+}
+
+alias globdo='set -f; _globdo'
+
+err ()
+{
+    grep --recursive --color=auto --recursive -- "$@" /usr/include/*/errno.h /home/y/include/*;
+    if [ "${?}" != 0 ]; then
+        echo "Not found.";
+    fi
+}
+
+function range () { 
+    [ $1 -le $2 ] || return
+    a=$1
+    b=$2
+    while [ $a -le $b ]; do
+        echo $a;
+        a=$(($a+1));
+    done
+} 
+
+#-----------------------------------------------------------------------------
+function qf
+{
+   local i=1 cmd="" arg last file dir
+   while [ "$i" -lt "$#" ]; do
+      eval arg=\${$i}
+      # echo "arg $i = \"$arg\""
+      i=$(($i + 1))
+      cmd="$cmd $arg"
+      # echo "cmd: \"$cmd\""
+   done
+
+   eval last=\${$#}
+   # echo "last arg = \"$last\""
+   file="$last"
+   shift
+   if [ ! -f "$file" ]; then
+      if [ -z "$LOGSPATH" ]; then
+         echo "qf: No \$LOGSPATH defined."
+         return 1
+      fi
+      for dir in ${LOGSPATH//:/$'\t'}; do
+         # echo "qf: Searching dir: \"$dir\""
+         file=$(find -L $dir -name $last)
+         if [ -z "$file" ]; then continue; fi
+         if [ -f "$file" ]; then break; fi
+      done
+   fi
+   if [ -f "$file" ]; then
+      # echo "cmd: \"$cmd\" \"$file\""
+      eval "$cmd" "$file"
+   else
+      echo "qf: \"$file\" was not found"
+      return 2
+   fi
+}
+   
+#-----------------------------------------------------------------------------
+# grep code for a string
+gc ()
+{
+   rgrep -rh "$@" *.h *.c *.cc *.cpp Makefile *.php *.inc *.ros *.pl
+}
+
+ht()                                                                                                                        
+{                                                                                                                           
+    if [ -z "$1" ]                                                                                                          
+    then                                                                                                                    
+        echo "Usage: ht <filename>"                                                                                         
+        return                                                                                                              
+    fi                                                                                                                      
+    if [ ! -e "$1" ]                                                                                                        
+    then                                                                                                                    
+        echo "File does not exist: $1"                                                                                      
+        return                                                                                                              
+    fi                                                                                                                      
+    
+    url=$1                                                                                                                  
+    if [ "${1:0:1}" != "/" ]                                                                                                
+    then                                                                                                                    
+        url="$PWD/$1"                                                                                                       
+    fi                                                                                                                      
+    firefox -remote "openFile($url)"                                                                            
+}                                                   
+
+mach ()                                                                                                                     
+{
+    if [ -z "$1" ]; then
+        echo "Usage: mach <machine name>"
+        return
+    fi
+    grep $1 /etc/amd.homes                                                                                                    
+}                             
+
+#-----------------------------------------------------------------------------
+case $TERM in
+  xterm*)
+    title () { echo -en "\033]2;${*}\007"; }
+    icon () { echo -en "\033]1;${*}\007"; } ;;
+  screen*)
+    title () { echo -en "\033]2;${*}\007"; }
+    icon () { echo -en "\033]1;${*}\007"; } ;;
+  *)
+    title () { :; }
+    icon () { :; } ;;
+esac
+
+#-----------------------------------------------------------------------------
+pg ()
+{
+  ps auxww | egrep $1\|^USER | grep -v grep
+}
+
+#-----------------------------------------------------------------------------
+_back ()
+{
+  local dir
+    
+  [ $_PTR -gt 1 ] || return 1;
+    
+  _PTR=$[$_PTR-1]
+
+  eval dir=\$_$_PTR
+  builtin cd $dir
+  echo -e "$_PTR\t$dir"
+}
+
+#-----------------------------------------------------------------------------
+_forward ()
+{
+  local dir
+
+  [ $_PTR -lt $_DIR ] || return 1;
+
+  _PTR=$[$_PTR+1]
+
+  eval dir=\$_$_PTR
+
+  builtin cd $dir
+  echo -e "$_PTR\t$dir"
+}
+
+make_dir_aliases ()
+{
+  local i=0
+  while [ $i -lt 10 ]; do
+    alias "$i"='pushd +'"$i"' > /dev/null ; d'
+    i=$(($i + 1))
+  done
+}
+
+#-----------------------------------------------------------------------------
+copy_bash_ssh ()
+{
+  if [ ! $1 ]; then
+    echo "USAGE: copy_bash_ssh hostname"
+    return
+  fi
+
+  local bash_files='.bashrc .bash_env .bash_function .bash_profile .DIR_COLORS_DARK .DIR_COLORS_LIGHT'
+  local ssh_files='.ssh/identity.pub .ssh/identity .ssh/authorized_keys'
+  local old_pwd=$PWD
+
+  command cd ~
+  for h in $*; do
+    echo $h:
+    /usr/bin/ssh $h mkdir .ssh
+    scp -p $ssh_files $h:.ssh/
+    scp -p $bash_files $h:
+  done
+  command cd $old_pwd
+}
+
+#-----------------------------------------------------------------------------
+copy_bash ()
+{
+  if [ ! $1 ]; then
+    echo "USAGE: copy_bash hostname"
+    return
+  fi
+
+#  local bash_files='.bashrc .bash_env .bash_function .bash_profile .bash_alias .DIR_COLORS_DARK .DIR_COLORS_LIGHT bin jed lib'
+  local bash_files='.bashrc .bash_env .bash_function .bash_profile .bash_alias .DIR_COLORS_DARK .DIR_COLORS_LIGHT'
+  local old_pwd=$PWD
+
+  command cd ~
+  for h in $*; do
+    echo $h:
+    rsync -pr -e /usr/bin/ssh $bash_files $h:
+  done
+  command cd $old_pwd
+}
+
+#-----------------------------------------------------------------------------
+copy_config ()
+{
+  if [ ! $1 ]; then
+    echo "USAGE: copy_config hostname"
+    return
+  fi
+
+  local files='.bashrc .bash_profile .Xdefaults .xsession .emacs .Xmodmap .DIR_COLORS_DARK .DIR_COLORS_LIGHT .addressbook .ircrc .pinerc .procmailrc .signature'
+  local old_pwd=$PWD
+
+  command cd ~
+  rsync -vute '/usr/bin/ssh -P -x' $files $1:
+  rsync -vute '/usr/bin/ssh -P -x' $1:"$files" .
+  command cd $old_pwd
+}
+
+#-----------------------------------------------------------------------------
+dg () { grep -i "$*" /usr/share/dict/words; }
+
+#-----------------------------------------------------------------------------
+eg () { set | grep -i "$*"; }
+
+#-----------------------------------------------------------------------------
+find_sym ()
+{
+  if [ ! "$1" ]; then
+    echo Usage: find_sym symbol [path]
+  elif [ "$2" ]; then
+    echo "**** searching $2" 
+    find $2 -name '*.a' -print | xargs nm -o 2>/dev/null | grep "$1"
+    find $2 -name '*.so' -print | xargs nm -o 2>/dev/null | grep "$1"
+    find $2 -name '*.o' -print | xargs nm -o 2>/dev/null | grep "$1"
+  elif [ "$1" ]; then
+    for i in /home/y/lib ~/dev/yahoo /usr/local/lib /usr/lib; do
+      echo "**** searching $i"
+      find "$i" -name '*.a' -print | xargs nm -o 2>/dev/null | grep "$1"
+      find "$i" -name '*.so' -print | xargs nm -o 2>/dev/null | grep "$1"
+      find "$i" -name '*.o' -print | xargs nm -o 2>/dev/null | grep "$1"
+    done
+  fi
+}
+
+#-----------------------------------------------------------------------------
+find_code_file ()
+{
+  if [ "$1" ]; then
+    for i in ~/dev/yahoo /usr/local/include /usr/local/lib /usr/lib \
+    /usr/include; do
+      echo "**** searching $i"
+      find $i -name "$1" -print
+    done
+  fi
+}
+
+#-----------------------------------------------------------------------------
+hg () { history | grep -i "$*"; }
+
+#-----------------------------------------------------------------------------
+kick ()
+{
+  if [ ! "$1" ]; then
+    echo "Usage: kick servers"
+    return
+  fi
+
+  for i; do
+    echo $i:;
+    command /usr/bin/ssh $i '/usr/local/bin/sudo /home/y/bin/webctl conftest && /usr/local/bin/sudo /home/y/bin/webctl restart';
+  done
+}
+
+#-----------------------------------------------------------------------------
+pagemeabout ()
+{
+   ( date;  hostname ) | mail -s "$*" page-$(id -un)@yahoo-inc.com
+}
+
+#-----------------------------------------------------------------------------
+pagemewhendone ()
+{
+   local process="$1"
+   while true; do 
+      sleep 60
+      if ps -max | grep -v grep | grep $process > /dev/null; then
+         :
+      else 
+         pagemeabout "Process $process is done"
+         break
+      fi
+   done & 
+}
+
+#-----------------------------------------------------------------------------
+prompt ()
+{
+  local pwd=$PWD
+
+  case $PWD in
+    $HOME*)
+      pwd=~${PWD#$HOME} ;;
+  esac
+
+  title "$HOST     $pwd"
+  icon "$HOST ${pwd##*/}"
+  echo -en "\033]2;\u@$HOSTNAME:\w\007\033\]1;\h \W\007\033[0;1;30m";
+}
+
+#-----------------------------------------------------------------------------
+wipe ()
+{
+  if [ ! $1 ]; then
+    echo USAGE: wipe [HOST]...
+    return
+  fi
+
+  for i; do
+    echo '------------------------------------------------------------------------------'
+    echo $i:
+    echo '**** removing packages'
+    /usr/bin/ssh $i 'yinst rm -live `yinst ls`'
+    echo '**** deleteing /home/repl and home/y'
+    /usr/bin/ssh $i sudo rm -rf /home/repl /home/y
+    echo '**** killing yapache, exmon and shmproxy'
+    /usr/bin/ssh $i 'sudo killall yapache; sudo killall -9 exmon; sudo killall -9 shmproxy'
+    echo
+  done
+
+}
+#-----------------------------------------------------------------------------
+xemacs ()
+{
+  gnuclient $@ || command xemacs $@
+}
+
+
+wg ()
+{
+  lynx -source -mime_header $@
+  echo
+}
+
+
+#-----------------------------------------------------------------------------
+yat()
+{
+  if [ ! $1 ]; then
+    echo USAGE: yat [HOST]...
+    return
+  fi
+
+  for i; do
+    echo $i:
+    if [ $2 ]; then
+      if lynx -mime_header http://$i/$2 &>/dev/null; then
+        echo "  server is up"
+      else
+        echo "  server is down"
+      fi
+    else 
+      if lynx -mime_header http://$i &>/dev/null; then
+        echo "  server is up"
+      else
+        echo "  server is down"
+      fi
+    fi
+  done
+}
+
+
+#-----------------------------------------------------------------------------
+yinst_diff ()
+{
+  if [ ! $1 ]; then
+    echo USAGE: yinst_diff [HOST1] [HOST2]
+    return
+  fi
+
+  yinst diff -noconfig -srchost $1 -h $2
+}
+
+
+#-----------------------------------------------------------------------------
+yinst_md5 ()
+{
+  if [ ! $2 ]; then
+    echo USAGE: yinst_md5 [HOST]..
+    return
+  fi
+
+  for i; do
+    echo "---------------------- $i:"
+    yinst ls -h $i -time | md5
+  done
+}
+
+
+#-----------------------------------------------------------------------------
+# ycvs
+if [ "$DOMAIN" = 'yahoo.com' ] || [ "$DOMAIN" = 'corp.yahoo.com' ]; then
+  ycvs ()
+  {
+    export CVSROOT=marca@vault.yahoo.com:/CVSROOT
+    export CVS_RSH='/usr/bin/ssh'
+    command cvs $@
+  }
+else
+  ycvs ()
+  {
+    export CVSROOT=marca@localhost:/CVSROOT
+    export CVS_RSH='/usr/bin/ssh'
+    command cvs $@
+  }
+fi
+
+
+#-----------------------------------------------------------------------------
+setenv () { export $1=$2; }
+#-----------------------------------------------------------------------------
+rept ()
+{
+   local delay=$1
+   shift
+   while true; do
+      eval "$@"
+      sleep $delay
+   done
+}
+#-----------------------------------------------------------------------------
+set_title() { echo -n "]2;$1"; }
+
+serve() { python -m SimpleHTTPServer ${1:-8080}; }
+
+
+# Mac OS X only
+
+pman () {
+    man -t "$@" | open -f -a /Applications/Preview.app
+}

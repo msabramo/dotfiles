@@ -1,0 +1,47 @@
+escape ^ll
+
+# don't display the copyright page
+startup_message off
+
+autodetach on
+defscrollback 65535
+caption always "%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<"
+
+# terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+# tell screen how to set colors. AB = background, AF=foreground
+# the first two are for other terminal emulators, just in case.
+termcapinfo xterm "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
+termcapinfo xterm-256color "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
+#termcapinfo xterm-color "Co#256:AB=E[48;5;%dm:AF=E[38;5;%dm"
+#termcapinfo xterm-256color "Co#256:AB=E[48;5;%dm:AF=E[38;5;%dm"
+# term xterm-256color
+# erase background with current bg color
+defbce "on"
+
+altscreen on
+
+# caption always "%w"
+# shelltitle shifter
+
+# bindkey U screen -t 'umt1.pers' ssh umt1.pers.sc5
+
+# Set the hardstatus prop on gui terms to set the titlebar/icon title
+# termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
+
+# termcapinfo xterm 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+# termcapinfo rxvt 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+
+# hardstatus on
+# hardstatus string "%h%? users: %u%?"
+# This will show today's date in mmdd and the current time, too:
+# hardstatus alwayslastline " %m/%d %c"
+
+# set these terminals up to be 'optimal' instead of vt100
+# termcapinfo xterm*|linux*|rxvt*|Eterm* OP
+
+# bindkey "[3~" stuff "foo"
+
+# shelltitle '> |bash'
+# screen 1

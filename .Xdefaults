@@ -1,0 +1,5 @@
+XTerm*font:             10x20
+XTerm*background:       black
+XTerm*foreground:       gray
+
+Emacs*geometry:         80x38

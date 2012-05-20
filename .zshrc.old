@@ -1,0 +1,58 @@
+# -*- mode: shell-script -*-
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+fpath=($fpath ~/zsh-functions)
+
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt appendhistory autocd notify
+bindkey -e
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/marc/.zshrc'
+
+autoload -U compinit
+compinit
+# End of lines added by compinstall
+
+# if [ -f /home/y/etc/yroot/yroot.zshrc ]; then
+#     . /home/y/etc/yroot/yroot.zshrc
+# fi
+
+# Use $LS_COLORS for zsh completions
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# Make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+
+# Set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" -a -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+PROMPT=$'%{\e[0;32m%}%m[%B%h%b]%{\e[0m%}:%B%~%b%% '
+
+# Utility functions
+BASH_LIB_DIR=~/homedir/dotfiles/bash
+if [ -f ${BASH_LIB_DIR}/core_funcs.bash ]; then source ${BASH_LIB_DIR}/core_funcs.bash; fi
+
+# Special stuff work shifter
+if [ "${HOSTNAME}" = "shifter" ]; then
+    if [ -f ${BASH_LIB_DIR}/shifter.bash ]; then source ${BASH_LIB_DIR}/shifter.bash; fi
+fi
+
+# Enable color support of ls
+if [ "$TERM" != "dumb" ]; then
+    if program_present "dircolors"; then eval "`dircolors -b`"; fi
+    if ls --color=auto -l > /dev/null 2>&1; then
+        alias ls='ls -CF --color=auto'
+    else
+        alias ls='ls -CF'
+    fi
+fi
+
+alias rc='source ~/.zshrc'
