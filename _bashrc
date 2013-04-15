@@ -5,10 +5,11 @@
 
 export P4CONFIG=.p4config
 export NODE_PATH=/usr/local/lib/node
+export PIP_DOWNLOAD_CACHE=~/.pip/download-cache
 
-if [ -f "$HOME/.profile" ]; then
-    . $HOME/.profile
-fi
+# if [ -f "$HOME/.profile" ]; then
+#     . $HOME/.profile
+# fi
 
 if [ ! -z "$BASH_VERSION" ]; then
     # check the window size after each command and, if necessary, update
@@ -20,8 +21,8 @@ if [ ! -z "$BASH_VERSION" ]; then
 fi
 
 # Python virtualenvwrapper
-export WORKON_HOME=~/python/virtualenvs
-source /usr/local/bin/virtualenvwrapper_bashrc 
+# export WORKON_HOME=~/python/virtualenvs
+# source /usr/local/bin/virtualenvwrapper_bashrc 
 
 # Make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
@@ -152,12 +153,13 @@ export PERL5LIB="${HOME}/lib/perl"
 export SHMUX_SSH_OPTS=""
 
 # To stop garbage characters from being output by UTF-8 from Mono
-export LC_ALL=C
+# export LC_ALL=C
 
-# export PATH=~/bin:~/ruby/bin:/home/y/bin:/sbin:/bin:/usr/sbin/:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/X11R6/bin
-path_prepend /usr/local/bin > /dev/null
-path_prepend /usr/local/sbin > /dev/null
-path_prepend ~/bin > /dev/null
+export PATH=~/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.3/bin:/Library/Frameworks/Python.framework/Versions/3.2/bin:~/ruby/bin:/sbin:/bin:/usr/sbin/:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/X11R6/bin:/Library/Frameworks/Python.framework/Versions/3.3/bin
+# path_prepend /Library/Frameworks/Python.framework/Versions/3.3/bin
+# path_prepend /usr/local/bin > /dev/null
+# path_prepend /usr/local/sbin > /dev/null
+# path_prepend ~/bin > /dev/null
 
 if [ ! -z "$YROOT_NAME" ]; then
     export PS1="\[\033[01;33m\][$YROOT_NAME]\[\033[00m\] $PS1"
@@ -495,7 +497,7 @@ find_code_file ()
 }
 
 #-----------------------------------------------------------------------------
-hg () { history | grep -i "$*"; }
+# hg () { history | grep -i "$*"; }
 
 #-----------------------------------------------------------------------------
 kick ()
