@@ -1,0 +1,11 @@
+[Credentials]
+euca_access_key_id=<Update me>
+euca_secret_access_key=<Update me>
+aws_access_key_id=<Update me>
+aws_secret_access_key=<Update me>
+
+[Boto]
+ec2 = eucalyptus.ecc.eucalyptus.com
+eucalyptus_host = eucalyptus.ecc.eucalyptus.com
+walrus_host = walrus.ecc.eucalyptus.com
+debug = 2
