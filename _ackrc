@@ -2,3 +2,9 @@
 --type-set=puppet=.pp
 --pager=less -FRSX
 --ignore-dir=coverage-html
+--ignore-dir=.tox
+--ignore-dir=.git
+--ignore-dir=.hg
+--ignore-dir=py26.venv
+--ignore-dir=py27.venv
+--ignore-dir=py33.venv
