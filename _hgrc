@@ -1,0 +1,8 @@
+[ui]
+username = Marc Abramowitz <marc@marc-abramowitz.com>
+verbose = True
+
+[extensions]
+hgext.bookmarks =
+hggit =
+mq =
