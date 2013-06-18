@@ -30,6 +30,7 @@
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     ls = ls-files
+    wat = whatchanged -p --abbrev-commit --pretty=medium
 
 [hub]
     host = code.corp.surveymonkey.com
