@@ -29,3 +29,6 @@
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     ls = ls-files
 
+[hub]
+    host = code.corp.surveymonkey.com
+    protocol = http
