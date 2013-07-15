@@ -26,7 +26,7 @@
     df = diff
     lg = log -p
     last = !sh -c 'git log -n1 --oneline HEAD' | cat
-    up = !sh -c 'git pull --rebase --prune && git log --pretty=format:\"%Cred%ae %Creset- %C(yellow)%s %Creset(%ar)\" HEAD@{1}..'
+    up = !sh -c 'git pull --rebase --prune && git --no-pager log --oneline HEAD@{2}..'
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     ls = ls-files
