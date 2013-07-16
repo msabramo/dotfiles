@@ -2,6 +2,9 @@
 username = Marc Abramowitz <marc@marc-abramowitz.com>
 verbose = True
 
+[ui]
+ignore = ~/.hgignore
+
 [extensions]
 hgext.bookmarks =
 hggit =
