@@ -26,3 +26,6 @@ delay = 1
 
 [alias]
 slog = log --template '{rev}:{node|short} {desc|firstline}\n' --pager always
+
+[defaults]
+glog = --template 'changeset:   {rev}:{node|short} {tags}\nsummary:     {desc|firstline|fill68|tabindent|tabindent}\n\n'
