@@ -9,3 +9,8 @@ ignore = ~/.hgignore
 hgext.bookmarks =
 hggit =
 mq =
+pager =
+
+[pager]
+pager = LESS='FSRX' less
+ignore = version, help, update, serve, record
