@@ -23,3 +23,6 @@ ignore = version, help, update, serve, record
 
 [progress]
 delay = 1
+
+[alias]
+slog = log --template '{rev}:{node|short} {desc|firstline}\n' --pager always
