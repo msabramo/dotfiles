@@ -6,6 +6,7 @@ verbose = True
 ignore = ~/.hgignore
 
 [extensions]
+color =
 hgext.bookmarks =
 hggit =
 mq =
