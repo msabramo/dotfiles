@@ -5,6 +5,9 @@ verbose = True
 [ui]
 ignore = ~/.hgignore
 
+[diff]
+git = True
+
 [extensions]
 color =
 hgext.bookmarks =
