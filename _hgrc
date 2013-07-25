@@ -11,7 +11,12 @@ hgext.bookmarks =
 hggit =
 mq =
 pager =
+progress =
+graphlog =
 
 [pager]
 pager = LESS='FSRX' less
 ignore = version, help, update, serve, record
+
+[progress]
+delay = 1
