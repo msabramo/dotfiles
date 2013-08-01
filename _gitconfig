@@ -1,38 +1,38 @@
 [user]
-    name = Marc Abramowitz
-    email = marc@marc-abramowitz.com
+  name = Marc Abramowitz
+  email = marc@marc-abramowitz.com
 
 [color]
-    diff = auto
-    status = auto
-    branch = auto
-    ui = auto
+  diff = auto
+  status = auto
+  branch = auto
+  ui = auto
 
 [push]
-    default = matching
+  default = matching
 
 [core]
-    editor = vim
-    pager = less -R
+  editor = vim
+  pager = less -R
 	excludesfile = ~/.gitignore
 
 [alias]
-    diverges = !bash -c 'diff -u <(git rev-list --first-parent "${1}") <(git rev-list --first-parent "${2:-HEAD}") | sed -ne \"s/^ //p\" | head -1' -
-    master = checkout master
-    rollback = reset --hard HEAD@{1}
-    st = status -sb
-    ci = commit
-    br = branch
-    co = checkout
-    df = diff
-    lg = log -p
-    last = !sh -c 'git log -n1 --oneline HEAD' | cat
-    up = !sh -c 'git pull --rebase --prune && git --no-pager log --oneline HEAD@{2}..'
-    lol = log --graph --decorate --pretty=oneline --abbrev-commit
-    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-    ls = ls-files
-    wat = whatchanged -p --abbrev-commit --pretty=medium
+  diverges = !bash -c 'diff -u <(git rev-list --first-parent "${1}") <(git rev-list --first-parent "${2:-HEAD}") | sed -ne \"s/^ //p\" | head -1' -
+  master = checkout master
+  rollback = reset --hard HEAD@{1}
+  st = status -sb
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  lg = log -p
+  last = !sh -c 'git log -n1 --oneline HEAD' | cat
+  up = !sh -c 'git pull --rebase --prune && git --no-pager log --oneline HEAD@{2}..'
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  ls = ls-files
+  wat = whatchanged -p --abbrev-commit --pretty=medium
 
 [hub]
-    host = code.corp.surveymonkey.com
-    protocol = http
+  host = code.corp.surveymonkey.com
+  protocol = http
