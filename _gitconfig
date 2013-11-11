@@ -1,3 +1,5 @@
+# vim: set filetype=gitconfig expandtab:
+
 [user]
   name = Marc Abramowitz
   email = marc@marc-abramowitz.com
