@@ -53,3 +53,4 @@ html-template/**
 .flexLibProperties
 .project
 .settings/**
+*.venv/
