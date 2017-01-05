@@ -19,7 +19,7 @@ set cpoptions=ceFs
 set tags=./tags,./../tags,./../../tags,~/tags,~/dev/tags
 
 " colorscheme borland
-set background=light
+set background=dark
 syntax on
 
 " Only do case-sensitive search if search has uppercase letter - that's smart
