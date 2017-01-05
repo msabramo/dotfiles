@@ -11,7 +11,7 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-set backupdir=~/backups     " Don't store backups in the current directory
+set backupdir=~/.vim/backups     " Don't store backups in the current directory
 
 " set cpoptions-=B
 set cpoptions=ceFs
@@ -128,7 +128,7 @@ set viminfo='50,%,n/tmp/viminfo
 
 " Where to put swap files
 "set dir='~/tmp,/var/tmp,/tmp'
-set dir=/tmp
+set dir=~/.vim/swap
 
 set hidden
 
