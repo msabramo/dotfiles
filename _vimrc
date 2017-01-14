@@ -1,73 +1,79 @@
-" Marc's .vimrc file
-
-" OS X specific stuff
-" set guifont=Monaco:h14
-" colorscheme evening
-
-" Copy by default to the OS X clipboard when yanking
-" set clipboard=unnamed
+" marc's .vimrc file
 
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-set backupdir=~/.vim/backups     " Don't store backups in the current directory
+" Fonts
+" - font type and size setting.
+if has('win32')
+    set guifont=Consolas:h12   " Win32.
+elseif has('gui_macvim') && has('gui_running')
+    set guifont=Monaco:h14     " OSX.
+else
+    set guifont=Monospace\ 12  " Linux.
+endif
 
+if has('gui_macvim') && has('gui_running')
+    " Copy by default to the OS X clipboard when yanking
+    set clipboard=unnamed
+endif
+
+" I don't know what these do or if I need them
+" http://vimdoc.sourceforge.net/htmldoc/options.html#'cpoptions'
 " set cpoptions-=B
-set cpoptions=ceFs
+" set cpoptions=ceFs
 
-set tags=./tags,./../tags,./../../tags,~/tags,~/dev/tags
+" set tags=./tags,./../tags,./../../tags,~/tags,~/dev/tags
+
+if has("termguicolors")
+    set termguicolors
+endif
 
 " colorscheme borland
+" colorscheme evening
+:silent! colorscheme macvim
 set background=dark
 syntax on
 
 " Only do case-sensitive search if search has uppercase letter - that's smart
 set ignorecase smartcase
 
-" When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-  finish
-endif
-
-set makeprg=gmake
-
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-set autoindent		" always set autoindenting on
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file
-endif
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
-set ttymouse=xterm  " so vim doesn't hang inside screen and tmux
-set mouse=a             " enable mouse in all modes
+set autoindent		           " always set autoindenting on
+set backup		               " keep a backup file
+" set colorcolumn=80             " Show colored margin
+set history=50		           " keep 50 lines of command line history
+set incsearch		           " do incremental searching
+set ruler		               " show the cursor position all the time
+set showcmd		               " display incomplete commands
+set showmode                   " display when in INSERT mode
+set ttymouse=xterm             " so vim doesn't hang inside screen and tmux
+set mouse=a                    " enable mouse in all modes
+set undofile                   " persist undo state across vim restarts
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
 
 " Don't use Ex mode, use Q for formatting
-map Q gq
+" map Q gq
 
 " shortcuts for opening .c and .h files
-map gc :e %:t:r.c<CR>
-map gh :e %:t:r.h<CR>
+" map gc :e %:t:r.c<CR>
+" map gh :e %:t:r.h<CR>
 
-" This is an alternative that also works in block mode, but the deleted
-" text is lost and it only works for putting the current register.
+" This is an alternative that also works in block mode, but the deleted text
+" is lost and it only works for putting the current register.
 "vnoremap p "_dp
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set nohlsearch " I hate hlsearch
-endif
+" if &t_Co > 2 || has("gui_running")
+"   syntax on
+"   set nohlsearch " I hate hlsearch
+" endif
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -91,11 +97,86 @@ if has("autocmd")
 
 endif " has("autocmd")
 
+"------------------------------------------------------------------------------
+" key mappings
+"------------------------------------------------------------------------------
+
+let mapleader = ","
+
+" Toggle paste mode with <F4>
+" Janus does the following:
+"     nmap <silent> <F4> :set invpaste<CR>:set paste?<CR>
+"     imap <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
+" But this seems easier and doesn't write <F4> when in insert paste mode
+set pastetoggle=<F4>
+
+" Ctrl-i: Turn on paste and enter insert mode
+map <C-p>     :set paste<CR>i
+
+" Underline the current line with '='
+nmap <silent> <leader>ul :t.<CR>Vr=
+
+" Toggle line numbering
+function! ToggleLineNumbering()
+    if !&number && !&relativenumber
+        setlocal number
+    elseif &number && !&relativenumber
+        setlocal relativenumber
+    elseif &number && &relativenumber
+        setlocal nonumber norelativenumber
+    endif
+endfunction
+
+" Toggle colorcolumn
+function! ToggleColorColumn()
+    if &colorcolumn == 0
+        setlocal colorcolumn=80
+    else
+        setlocal colorcolumn=0
+    endif
+endfunction
+
+nnoremap <leader>N :call ToggleLineNumbering()<CR>
+" nnoremap <leader>N :setlocal number!<CR>:setlocal number?<CR>
+" nnoremap <leader>R :setlocal relativenumber!<CR>:setlocal relativenumber?<CR>
+
+" Toggle colorcolumn
+nnoremap <leader>C :call ToggleColorColumn()<CR>
+
+" Toggle hlsearch with <leader>hs
+nmap <leader>hs :set invhlsearch hlsearch?<CR>
+
+" Easy way to exit insert mode
+inoremap ii <Esc>
+
+" Indent with Tab and Shift-Tab
+nnoremap <Tab> >>
+nnoremap <S-Tab> <<
+vnoremap <Tab> >>
+vnoremap <S-Tab> <<
+
+" Go to line number in normal mode by typing it and <Enter>
+" http://vim.wikia.com/wiki/Jump_to_a_line_number
+nnoremap <CR> G
+
+" upper/lower word
+nmap <leader>uw mQviwU`Q
+nmap <leader>lw mQviwu`Q
+
+" Make j and k work the way you'd expect for long lines
+" http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+nnoremap j gj
+nnoremap k gk
+
+" Quickly open ~/.vimrc
+nnoremap <leader>ve <C-w><C-v><C-l>:e $MYVIMRC<cr>
+nnoremap <leader>vs :source $MYVIMRC<cr>
+
 " mappings for splits from http://jmcpherson.org/windows.html:
-" map <C-H> <C-W>h
-" map <C-J> <C-W>j
-" map <C-K> <C-W>k
-" map <C-L> <C-W>l
+map <C-H> <C-W>h
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-L> <C-W>l
 " set wmh=0
 
 map <C-Tab> :bnext<CR>
@@ -105,7 +186,42 @@ map ,<Right> :bnext<CR>
 " nnoremap ,,  <C-^>
 nnoremap ,,  :bnext<CR>
 nnoremap <SPACE> :bnext<CR>
-nnoremap zl :ls!<CR>:buf /
+" nnoremap zl :ls!<CR>:buf /
+nnoremap <leader>bd :bd<CR>
+
+"------------------------------------------------------------------------------
+" END key mappings
+"------------------------------------------------------------------------------
+
+"------------------------------------------------------------------------------
+" Automatically use paste when pasting in terminal
+"------------------------------------------------------------------------------
+
+function! WrapForTmux(s)
+  if !exists('$TMUX')
+    return a:s
+  endif
+
+  let tmux_start = "\<Esc>Ptmux;"
+  let tmux_end = "\<Esc>\\"
+
+  return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
+endfunction
+
+let &t_SI .= WrapForTmux("\<Esc>[?2004h")
+let &t_EI .= WrapForTmux("\<Esc>[?2004l")
+
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+"------------------------------------------------------------------------------
+" END Automatically use paste when pasting in terminal
+"------------------------------------------------------------------------------
 
 "
 " PHP stuff from http://www.schlitt.info/misc/.vimrc
@@ -126,9 +242,19 @@ set smartindent
 " Save some info about the session between sessions
 set viminfo='50,%,n/tmp/viminfo
 
-" Where to put swap files
-"set dir='~/tmp,/var/tmp,/tmp'
-set dir=~/.vim/swap
+if !isdirectory($HOME."/.vim")
+    call mkdir($HOME."/.vim", "", 0770)
+endif
+if !isdirectory($HOME."/.vim/undo")
+    call mkdir($HOME."/.vim/undo", "", 0700)
+endif
+
+" Where to put various files that vim maintains
+" http://stackoverflow.com/a/15317146
+set backupdir=~/.vim/backup
+" set directory=~/.vim/swap//
+set noswapfile
+set undodir=~/.vim/undo//
 
 set hidden
 
