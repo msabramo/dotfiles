@@ -1,0 +1,133 @@
+# Configs
+config defaultToCurrentScreen true
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+config secondsBetweenRepeat 0.1
+config checkDefaultsOnLoad true
+config focusCheckWidthMax 3000
+# config keyboardLayout dvorak
+config windowHintsShowIcons true
+config windowHintsIgnoreHiddenWindows false
+#config windowHintsDuration 5
+config windowHintsSpread true
+#config windowHintsOrder persist
+
+# Monitor Aliases
+alias mon-laptop      1440x900
+alias mon-dell        3440x1440
+
+# Misc Aliases
+alias showHintsLeftHand hint AOEUIYQJKX
+alias showNormalHint hint AOEUIDHTNSYXFBPKGMCW
+alias browser 'Google Chrome'
+alias editor 'MacVim'
+
+# Abstract positions
+alias full          move screenOriginX;screenOriginY                  screenSizeX;screenSizeY
+alias lefthalf      move screenOriginX;screenOriginY                  screenSizeX/2;screenSizeY
+alias righthalf     move screenOriginX+screenSizeX/2;screenOriginY    screenSizeX/2;screenSizeY
+alias leftthird     move screenOriginX;screenOriginY                  screenSizeX/3;screenSizeY
+alias middlethird   move screenOriginX+screenSizeX/3;screenOriginY    screenSizeX/3;screenSizeY
+alias rightthird    move screenOriginX+2*screenSizeX/3;screenOriginY  screenSizeX/3;screenSizeY
+# alias rightmost     move screenOriginX+screenSizeX*0.4;screenOriginY  screenSizeX*0.6;screenSizeY
+# alias rightless     move screenOriginX+screenSizeX*0.6;screenOriginY  screenSizeX*0.4;screenSizeY
+# alias leftmost      move screenOriginX;screenOriginY                  screenSizeX*0.6;screenSizeY
+# alias leftless      move screenOriginX;screenOriginY                  screenSizeX*0.4;screenSizeY
+# Concrete positions
+alias dell-lefthalf     ${lefthalf} ${mon-dell}
+alias dell-righthalf     ${righthalf} ${mon-dell}
+alias dell-leftthird     ${leftthird} ${mon-dell}
+alias dell-middlethird   ${middlethird} ${mon-dell}
+alias dell-rightthird    ${rightthird} ${mon-dell}
+alias dell-full          ${full} ${mon-dell}
+# alias 1-full        move screenOriginX;screenOriginY screenSizeX;screenSizeY         ${mon-laptop}
+# alias 1-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${mon-laptop}
+# alias 1-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${mon-laptop}
+# alias 2-left        move screenOriginX;screenOriginY screenSizeX/2;screenSizeY         ${mon-dell}
+# alias 2-right       move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY         ${mon-dell}
+# alias 2-righttop    move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY/2       ${mon-dell}
+# alias 2-rightbottom move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2    screenSizeX/2;screenSizeY/2       ${mon-dell}
+
+# 2 Monitor layout
+layout 2monitors 'MacVim':REPEAT              		  ${dell-lefthalf}
+layout 2monitors 'iTerm2':MAIN_FIRST                ${dell-righthalf}
+layout 2monitors 'Google Chrome':MAIN_FIRST         ${dell-righthalf}
+
+# 1 Monitor layout
+# layout 1monitor 'iTerm':MAIN_FIRST                       ${1-right}
+# layout 1monitor 'Sublime Text 2':MAIN_FIRST              ${1-left}
+# layout 1monitor 'MacVim':MAIN_FIRST              		 ${1-left}
+# layout 1monitor 'Safari':REPEAT                          ${1-full}
+# layout 1monitor 'Nightly':REPEAT                          ${1-full}
+# layout 1monitor 'Mail':MAIN_FIRST                        ${1-full}
+# layout 1monitor 'Path Finder':MAIN_FIRST                 ${1-full}
+# layout 1monitor 'Xcode':REPEAT                           ${1-full}
+# layout 1monitor 'Eclipse':REPEAT                         ${1-full}
+# layout 1monitor 'iTunes':REPEAT                          ${1-full}
+
+# Default Layouts
+default 2monitors resolutions:${mon-laptop};${mon-dell}
+default 1monitor  resolutions:${mon-laptop}
+
+# Numpad location Bindings
+# bind pad0 ${showHintsLeftHand}
+# bind pad1 ${leftless}
+# bind pad2 push bottom bar-resize:screenSizeY/2
+# bind pad3 ${rightless}
+# bind pad4 ${lefthalf}
+# bind pad5 ${full}
+# bind pad6 ${righthalf}
+# bind pad7 ${leftmost}
+# bind pad8 push top bar-resize:screenSizeY/2
+# bind pad9 ${rightmost}
+# bind padEnter grid padding:5 ${mon-laptop}:6,2 ${mon-dell}:8,3
+# bind pad+ throw next
+# bind pad. focus behind
+# bind pad* layout 2monitors
+# bind pad/ layout 1monitor
+
+bind e:cmd  ${showNormalHint}
+
+# ======================================
+# The HYPER key
+# ======================================
+
+alias hyper ctrl;alt;cmd
+
+bind r:${hyper} relaunch
+
+# Grid
+bind esc:ctrl grid padding:5 ${mon-dell}:6,2 ${mon-laptop}:6,2
+
+# App switcher
+# bind tab:${hyper} switch
+
+# Location bindings
+bind 1:${hyper} ${leftthird}
+bind 2:${hyper} ${middlethird}
+bind 3:${hyper} ${rightthird}
+bind h:${hyper} ${lefthalf}
+bind l:${hyper} ${righthalf}
+bind return:${hyper} ${full}
+bind r:${hyper} throw next
+
+# Resize Bindings
+#bind r:${hyper} ${leftmost}
+#bind g:${hyper} ${rightmost}
+
+# Focus Bindings
+bind right:${hyper}    focus right
+bind left:${hyper}     focus left
+bind up:${hyper}       focus up
+bind down:${hyper}     focus down
+
+# App bindings
+bind b:${hyper} focus ${browser}
+bind o:${hyper} focus 'OmniFocus'
+bind s:${hyper} focus 'Slack'
+bind t:${hyper} focus 'iTerm2'
+bind v:${hyper} focus ${editor}
+
+bind e:${hyper} sequence focus 'Microsoft Outlook' > toggle 'Microsoft Outlook'
+bind f:${hyper} sequence focus 'Finder' > toggle 'Finder'
+bind m:${hyper} sequence focus 'Messages' > toggle 'Messages'
