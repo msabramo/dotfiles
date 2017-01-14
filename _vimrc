@@ -22,6 +22,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-fugitive'
 
@@ -152,7 +153,7 @@ nnoremap <F4> :set invpaste paste?<CR>
 set pastetoggle=<F4>
 
 " Turn on paste and enter insert mode
-map <C-p>     :set paste<CR>i
+" map <C-p>     :set paste<CR>i
 
 " Underline the current line with '='
 nmap <silent> <leader>ul :t.<CR>Vr=
@@ -339,6 +340,13 @@ autocmd BufNewFile,BufRead *.pm,*.pl,*.pm.in,*.pl.in,*.c,*.h set formatoptions= 
 autocmd BufNewFile,BufRead *.pm,*.pl,*.pm.in,*.pl.in,*.c,*.h set expandtab autoindent
 autocmd BufEnter *.pm,*.pl,*.pm.in,*.pl.in set keywordprg=perlmegaman
 autocmd BufLeave *.pm,*.pl,*.pm.in,*.pl.in set keywordprg=megaman
+
+"------------------------------------------------------------------------------
+" CtrlP settings
+"------------------------------------------------------------------------------
+
+let g:ctrlp_map = '<c-p>'
+map <c-p> :CtrlPMixed<CR>
 
 "------------------------------------------------------------------------------
 " NERDCommenter settings
