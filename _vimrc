@@ -162,7 +162,7 @@ function! ToggleLineNumbering()
         setlocal number
     elseif &number && !&relativenumber
         setlocal relativenumber
-    elseif &number && &relativenumber
+    elseif &number || &relativenumber
         setlocal nonumber norelativenumber
     endif
 endfunction
