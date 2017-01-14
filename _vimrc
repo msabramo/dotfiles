@@ -4,6 +4,45 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
+"------------------------------------------------------------------------------
+" Set up Vundle
+"------------------------------------------------------------------------------
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" Vundle plugins
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'tpope/vim-fugitive'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+"------------------------------------------------------------------------------
+" END Set up Vundle
+"------------------------------------------------------------------------------
+
 " Fonts
 " - font type and size setting.
 if has('win32')
@@ -108,9 +147,10 @@ let mapleader = ","
 "     nmap <silent> <F4> :set invpaste<CR>:set paste?<CR>
 "     imap <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 " But this seems easier and doesn't write <F4> when in insert paste mode
+nnoremap <F4> :set invpaste paste?<CR>
 set pastetoggle=<F4>
 
-" Ctrl-i: Turn on paste and enter insert mode
+" Turn on paste and enter insert mode
 map <C-p>     :set paste<CR>i
 
 " Underline the current line with '='
@@ -178,6 +218,12 @@ map <C-J> <C-W>j
 map <C-K> <C-W>k
 map <C-L> <C-W>l
 " set wmh=0
+
+" cd to the directory containing the file in the buffer
+nmap <silent> <leader>cd :lcd %:h<CR>
+
+" Create the directory containing the file in the buffer
+nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
 
 map <C-Tab> :bnext<CR>
 map <S-C-Tab> :bprevious<CR>
