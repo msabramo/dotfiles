@@ -22,6 +22,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
@@ -339,3 +340,19 @@ autocmd BufNewFile,BufRead *.pm,*.pl,*.pm.in,*.pl.in,*.c,*.h set expandtab autoi
 autocmd BufEnter *.pm,*.pl,*.pm.in,*.pl.in set keywordprg=perlmegaman
 autocmd BufLeave *.pm,*.pl,*.pm.in,*.pl.in set keywordprg=megaman
 
+"------------------------------------------------------------------------------
+" NERDCommenter settings
+"------------------------------------------------------------------------------
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" NERDCommenter mappings
+map <D-/> <plug>NERDCommenterToggle
+map <leader>/ <plug>NERDCommenterToggle
