@@ -309,38 +309,6 @@ set undodir=~/.vim/undo//
 
 set hidden
 
-"   Wildcard settings
-"       What to ignore
-set wildignore=*.o,*.so,*~,*/CVS
-"       complete to longest common and list the alternatives
-set wildmode=list:longest
-
-set <M-c>=c
-
-" Enable vimacs
-" let g:VM_Enabled=1
-
-" set wildmenu
-
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1 
-" let g:miniBufExplForceSyntaxEnable = 1
-let g:Tb_cTabSwitchBufs = 1
-
-
-" C formatting stuff from http://pst.corp.p4pnet.net/~pmineiro/.vimrc:
-" The following sets up autoindent in the GNU coding style.
-set cinoptions=(0,g0,{s,>2s,n-s,^-s,t0
-set cindent
-
-" only do that for C code
-autocmd BufNewFile,BufRead *.pm,*.pl,*.pm.in,*.pl.in,*.c,*.h set formatoptions= cindent
-autocmd BufNewFile,BufRead *.pm,*.pl,*.pm.in,*.pl.in,*.c,*.h set expandtab autoindent
-autocmd BufEnter *.pm,*.pl,*.pm.in,*.pl.in set keywordprg=perlmegaman
-autocmd BufLeave *.pm,*.pl,*.pm.in,*.pl.in set keywordprg=megaman
-
 "------------------------------------------------------------------------------
 " CtrlP settings
 "------------------------------------------------------------------------------
