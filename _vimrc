@@ -210,7 +210,7 @@ nnoremap k gk
 
 " Quickly open ~/.vimrc
 nnoremap <leader>ve <C-w><C-v><C-l>:e $MYVIMRC<cr>
-nnoremap <leader>vs :source $MYVIMRC<cr>
+nnoremap <leader>vs :source $MYVIMRC<cr>:echo "Sourced " .  $MYVIMRC<CR>
 
 " mappings for splits from http://jmcpherson.org/windows.html:
 map <C-H> <C-W>h
