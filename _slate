@@ -53,6 +53,8 @@ layout 2monitors 'Google Chrome':MAIN_FIRST         ${dell-righthalf}
 layout 1monitor 'MacVim':REPEAT              		${laptop-full}
 layout 1monitor 'iTerm2':MAIN_FIRST                 ${laptop-full}
 
+layout tile-chrome-windows 'Google Chrome':MAIN_FIRST ${lefthalf} | ${righthalf}
+
 # Default Layouts
 default 1monitor  resolutions:${mon-laptop}
 default 2monitors resolutions:${mon-laptop};${mon-dell}
@@ -83,6 +85,9 @@ bind e:cmd  ${showNormalHint}
 alias hyper ctrl;alt;cmd
 
 bind r:${hyper} relaunch
+
+# Layout bindings
+bind c:${hyper} layout tile-chrome-windows
 
 # Grid
 bind esc:ctrl grid padding:5 ${mon-dell}:6,2 ${mon-laptop}:6,2
