@@ -22,9 +22,23 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'mileszs/ack.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'fatih/vim-go'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
+Plugin 'ervandew/supertab'
+Plugin 'tpope/vim-surround'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'majutsushi/tagbar'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'regedarek/ZoomWin'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -117,26 +131,26 @@ set undofile                   " persist undo state across vim restarts
 " endif
 
 " Only do this part when compiled with support for autocommands.
-if has("autocmd")
-
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
-endif " has("autocmd")
+" if has("autocmd")
+" 
+"   " Enable file type detection.
+"   " Use the default filetype settings, so that mail gets 'tw' set to 72,
+"   " 'cindent' is on in C files, etc.
+"   " Also load indent files, to automatically do language-dependent indenting.
+"   filetype plugin indent on
+" 
+"   " For all text files set 'textwidth' to 78 characters.
+"   autocmd FileType text setlocal textwidth=78
+" 
+"   " When editing a file, always jump to the last known cursor position.
+"   " Don't do it when the position is invalid or when inside an event handler
+"   " (happens when dropping a file on gvim).
+"   autocmd BufReadPost *
+"     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+"     \   exe "normal g`\"" |
+"     \ endif
+" 
+" endif " has("autocmd")
 
 "------------------------------------------------------------------------------
 " key mappings
@@ -199,7 +213,9 @@ vnoremap <S-Tab> <<
 
 " Go to line number in normal mode by typing it and <Enter>
 " http://vim.wikia.com/wiki/Jump_to_a_line_number
-nnoremap <CR> G
+" nnoremap <CR> G
+" autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+" autocmd BufReadPost location nnoremap <buffer> <CR> <CR>
 
 " upper/lower word
 nmap <leader>uw mQviwU`Q
@@ -235,10 +251,13 @@ map <S-C-Tab> :bprevious<CR>
 map ,<Left> :bprevious<CR>
 map ,<Right> :bnext<CR>
 " nnoremap ,,  <C-^>
-nnoremap ,,  :bnext<CR>
+" nnoremap ,,  :bnext<CR>
 nnoremap <SPACE> :bnext<CR>
 " nnoremap zl :ls!<CR>:buf /
 nnoremap <leader>bd :bd<CR>
+
+nmap <F8> :TagbarToggle<CR>
+nmap <F9> :NERDTreeToggle<CR>
 
 "------------------------------------------------------------------------------
 " END key mappings
@@ -332,3 +351,51 @@ let g:NERDCommentEmptyLines = 1
 " NERDCommenter mappings
 map <D-/> <plug>NERDCommenterToggle
 map <leader>/ <plug>NERDCommenterToggle
+
+"------------------------------------------------------------------------------
+" ack.vim settings
+"------------------------------------------------------------------------------
+
+let g:ackprg = "ag --vimgrep"
+
+"------------------------------------------------------------------------------
+" vim-airline settings
+"------------------------------------------------------------------------------
+
+set laststatus=2
+let g:airline#extensions#tabline#enabled = 1
+
+"------------------------------------------------------------------------------
+" syntastic settings
+"------------------------------------------------------------------------------
+
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+"
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+
+if globpath(&runtimepath, 'plugin/airline.vim', 1) ==# '' && globpath(&runtimepath, 'plugin/lightline.vim', 1) ==# ''
+  set statusline+=%#warningmsg#
+  set statusline+=%{SyntasticStatuslineFlag()}
+  set statusline+=%*
+endif
+
+" let g:syntastic_mode_map = {'mode': 'passive'}
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_warning_symbol = 'W>'
+let g:syntastic_error_symbol = 'E>'
+let g:syntastic_style_warning_symbol = 'W}'
+let g:syntastic_style_error_symbol = 'E}'
+
+let g:syntastic_stl_format = '[%E{E:%e(#%fe)}%B{,}%W{W:%w(#%fw)}]'
+
+let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
