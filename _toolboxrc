@@ -1,0 +1,7 @@
+# ~/.toolboxrc
+# Config file for CoreOS/Container Linux Toolbox
+# https://github.com/coreos/toolbox
+# https://coreos.com/os/docs/latest/install-debugging-tools.html
+# https://cloud.google.com/container-optimized-os/docs/how-to/toolbox
+
+TOOLBOX_DIRECTORY="${HOME}/toolbox"
